@@ -1,12 +1,6 @@
-// import { galleryItems } from './gallery-items.js';
-// // Change code below this line
-
-// console.log(galleryItems);
-
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
-//get galleryItems items for work
-const makeGalleryItemsLibrary = element => {
+const makeGalleryItems = element => {
   const { preview, original, description } = element;
 
   return `
@@ -23,45 +17,27 @@ const makeGalleryItemsLibrary = element => {
     `;
 };
 
-//set galleryItems on DOM
-const images = document.querySelector('.gallery');
+const gallery = document.querySelector('.gallery');
 
-const makeSiteStructure = galleryItems.map(makeGalleryItemsLibrary).join('');
-
-images.innerHTML = makeSiteStructure;
-
-//Opening pictures
+const makeGallery = galleryItems.map(makeGalleryItems).join('');
+gallery.innerHTML = makeGallery;
 
 const instance = basicLightbox.create(
-  `
-		<img class="modal-img" src= ''>
-	`,
+  `<img class="modal-img" src= ''>`,
   {
-    onShow: instance => {
-      window.addEventListener('keydown', onEscPress);
-    },
-    onClose: instance => {
-      window.addEventListener('keydown', onEscPress);
-    },
+    onShow: () => document.addEventListener('keydown', onEscButtonPress),
   },
 );
-
-images.addEventListener('click', onOpenModal);
-
-function onOpenModal(e) {
+gallery.addEventListener("click", (e) => {
   e.preventDefault();
   if (e.target.nodeName !== 'IMG') {
-    return;
+    return
   }
   instance.element().querySelector('.modal-img').src = e.target.dataset.source;
-  //console.dir(e.target.dataset.source);
   instance.show();
-}
-
-// Closing pictures by pressing on Esc
-function onEscPress(elem) {
-  if (elem.key === 'Escape') {
+});
+function onEscButtonPress(e) {
+  if (e.key === 'Escape') {
     instance.close();
-    window.removeEventListener('keydown', onEscPress);
   }
 }
