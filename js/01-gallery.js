@@ -25,7 +25,10 @@ gallery.innerHTML = makeGallery;
 const instance = basicLightbox.create(
   `<img class="modal-img" src= ''>`,
   {
-    onShow: () => document.addEventListener('keydown', onEscButtonPress),
+    onShow: () => window.addEventListener('keydown', onEscButtonPress),
+  },
+  {
+    onClose: () => window.addEventListener('keydown', onEscButtonPress),
   },
 );
 gallery.addEventListener("click", (e) => {
@@ -39,5 +42,6 @@ gallery.addEventListener("click", (e) => {
 function onEscButtonPress(e) {
   if (e.key === 'Escape') {
     instance.close();
+    window.removeEventListener('keydown', onEscButtonPress);
   }
 }
